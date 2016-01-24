@@ -27,7 +27,7 @@ Navigate into the CUDA Toolkit directory:
 ```
 $ cd ~/opt/cuda-7.0/
 ```
-Currently TensorFlow requires cuDNN v2, and older version of the Nvidia deep learning libraries.  The bad news is you need to register for their Accelerated Computing Developer Program... (SIGHDUCK).  The good news is it is free and only requires you wait ~2 days while you contemplate your navel to get access to the download.  In the mean time you may install the CPU version of TensorFlow to pass the time or go outside! (hisss).  Anyway you need to log into their website and download the cuDNN v2 library for Linux.  The file is a tarball which you will extract inside your CUDA toolkit directory:
+Currently TensorFlow requires cuDNN v2, and older version of the Nvidia deep learning libraries.  The bad news is you need to register for their Accelerated Computing Developer Program... (SIGHDUCK).  The good news is it is free and only requires you wait ~2 days while you contemplate your navel to get access to the download.  In the mean time you may install the CPU version of TensorFlow to pass the time or go outside! (hisss).  Anyway you need to log into their website to download the cuDNN v2 library for Linux, then move the tarball to your CUDA toolkit directory (~/opt/cuda-7.0).  Extract the tarball inside your CUDA toolkit directory:
 ```
 $ tar -xvzf cudnn-6.5-linux-x64-v2.tgz
 ```
