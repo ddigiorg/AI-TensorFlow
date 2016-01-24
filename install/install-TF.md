@@ -17,18 +17,19 @@ Verify you have GCC installed:
 ```
 $ gcc --version
 ```
-Currently TensorFlow requires CUDA 7.0, an older version of the toolkit.  Download cuda-7.0 from the Arch User Repository(AUR):
+Currently TensorFlow requires CUDA 7.0, an older version of the toolkit.  Download [cuda-7.0](https://aur.archlinux.org/packages/cuda-7.0-compat/) from the Arch User Repository(AUR):
 ```
 $ sudo yaourt -S cuda-7.0-compat
 ```
 Arch will install to the directory ~/opt/cuda-7.0/  
 ##3. Install cuDNN v2
 [cuDNN Link](https://developer.nvidia.com/rdp/cudnn-archive)
+
 Navigate into the CUDA Toolkit directory:
 ```
 $ cd ~/opt/cuda-7.0/
 ```
-Currently TensorFlow requires cuDNN v2, and older version of the Nvidia deep learning libraries.  The bad news is you need to register for their Accelerated Computing Developer Program... (SIGHDUCK).  The good news is it is free and only requires you wait ~2 days while you contemplate your navel to get access to the download.  In the mean time you may install the CPU version of TensorFlow to pass the time or go outside! (hisss).  Anyway you need to log into their website to download the cuDNN v2 library for Linux, then move the tarball to your CUDA toolkit directory (~/opt/cuda-7.0).  Extract the tarball inside your CUDA toolkit directory:
+Currently TensorFlow requires [cuDNN v2](https://developer.nvidia.com/rdp/cudnn-archive), and older version of the Nvidia deep learning libraries.  The bad news is you need to register for their Accelerated Computing Developer Program... (SIGHDUCK).  The good news is it is free and only requires you wait ~2 days while you contemplate your navel to get access to the download.  In the mean time you may install the CPU version of TensorFlow to pass the time or go outside! (hisss).  Anyway you need to log into their website to download the cuDNN v2 library for Linux, then move the tarball to your CUDA toolkit directory (~/opt/cuda-7.0).  Extract the tarball inside your CUDA toolkit directory:
 ```
 $ tar -xvzf cudnn-6.5-linux-x64-v2.tgz
 ```
@@ -46,6 +47,8 @@ $ sudo chmod a+r /opt/cuda-7.0/lib64/libcudnn*
 $ rm cudnn-6.5-linux-x64-v2.tgz
 ```
 ##4. Install TensorFlow(GPU version)
+[TensorFlow](https://www.tensorflow.org/)
+
 Verify pip3 is installed:
 ```
 $ pip3 --version
