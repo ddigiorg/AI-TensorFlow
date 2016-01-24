@@ -23,8 +23,6 @@ $ sudo yaourt -S cuda-7.0-compat
 ```
 Arch will install to the directory ~/opt/cuda-7.0/  
 ##3. Install cuDNN v2
-[cuDNN Link](https://developer.nvidia.com/rdp/cudnn-archive)
-
 Navigate into the CUDA Toolkit directory:
 ```
 $ cd ~/opt/cuda-7.0/
