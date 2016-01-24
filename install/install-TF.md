@@ -21,7 +21,7 @@ Currently TensorFlow requires CUDA 7.0, an older version of the toolkit.  Downlo
 ```
 $ sudo yaourt -S cuda-7.0-compat
 ```
-Arch will install to the directory ~/opt/cuda-7.0/.  
+Arch will install to the directory ~/opt/cuda-7.0/  
 ##3. Install cuDNN v2
 Navigate into the CUDA Toolkit directory:
 ```
