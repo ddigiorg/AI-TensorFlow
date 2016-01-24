@@ -89,3 +89,34 @@ Hello, TensorFlow!
 42
 >>>
 ```
+
+#Arch Linux Dependancies
+##Installing wget
+```
+$ pacman -S wget
+```
+##Installing pip
+```
+$ pacman -S python-pip
+$ pip install wheel
+```
+##Installing yaourt
+Make sure you are running as a user and are in $HOME directory.
+Download package-query tarball from AUR [link](https://aur.archlinux.org/packages/package-query) using wget.  Right click “Download snapshot” and click “Copy Link Location”. Then:
+```
+$ tar -xf package-query.tar.gz
+$ cd package-query
+$ makepkg -cis 
+$ cd ..
+```
+Download yaourt tarball from AUR [link](https://aur.archlinux.org/packages/yaourt) using wget.  Right click “Download snapshot” and click “Copy Link Location”. Then:
+```
+$ tar -xf yaourt.tar.gz
+$ cd yaourt
+$ makepkg -cis 
+$ cd ..
+```
+Verify installation of yaourt by typing:
+```
+$ packman -Qe
+```
