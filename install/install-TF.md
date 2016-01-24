@@ -1,5 +1,8 @@
-#Installing TensorFlow(GPU version) on Arch Linux
+#Installing TensorFlow
 2016-01-24
++System: Arch Linux
++Python: 3.5.2
++TensorFlow: GPU version
 
 ##1. Install Nvidia drivers and other dependancies:
 ```
