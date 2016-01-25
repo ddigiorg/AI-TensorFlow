@@ -55,19 +55,19 @@ Zero padding simply means a border of zeros is added around the 2D image.  This 
 ```
               Input Image  
              (zero padded) 
- Input        ---------    
- Image       | ---------   
- -----       || ---------  
-| -----      |||000000000| 
-|| -----     |||000000000| 
-|||11133|    |||001113300| 
-|||31113|    |||003111300| 
-|||33113| -> |||003311300| 
- ||33113|    |||003311300| 
-  |31133|    |||003113300| 
-   -----      ||000000000| 
-               |000000000| 
-                ---------  
+  Input         -----------    
+  Image        | -----------   
+ -------       || -----------  
+| -------      ||| 000000000 |  
+|| -------     ||| 000000000 | 
+||| 11133 |    ||| 001113300 |  
+||| 31113 |    ||| 003111300 |  
+||| 33113 | -> ||| 003311300 | 
+ || 33113 |    ||| 003311300 | 
+  | 31133 |    ||| 003113300 | 
+   -------      || 000000000 | 
+                 | 000000000 | 
+                  -----------  
 ```
 ######Convolution
 The 2D input image X is convolved with a 2D filter W, then the result is added by a bias B.  This yields a feature map for the convolutional layer.  Imagine the input image is a translucent blue window(our zero padded 28x28 image).  Now, imagine the filter is a smaller translucent red window(our 5x5 filter).  If you place the red filter window over the blue image window and shine a light through both, you get a purple area the size of the filter window.  Keeping this picture in your head we then apply a 2D convolution upon the "purple area" where each element of the blue image in that area is multiplied by its repsective element in the red filter.  Once all elements have been multiplied, they are summed and then a bias is added to the result.  This summation is stored in the first element of the feature map.  Then the red filter slides over to the next part of the blue image and the convolution process is continued until all elements of the image have been convolved and feature map is complete.  How far the filter moves across the image is usually called "stride". 
@@ -75,20 +75,20 @@ The 2D input image X is convolved with a 2D filter W, then the result is added b
 ```           
 Input Image                          
 (zero padded)                  
-     X                          Conv
----------       Conv            Feature   
-| ---------     Filter          -------   
-|| ---------      W            | -------  
-|||000000000|    ---           || ------- 
-|||000000000|   | ---          |||1121100|
-|||001110000|   || ---         |||0223110|
-|||000111000|   |||101|  Bias  |||1143310|
-|||000011000| *  ||010| + B  = |||0124320|
-|||000011000|     |101|        |||0123310|
-|||000110000|      ---          ||0022110|
- ||000000000|                    |0111100|
-  |000000000|                     ------- 
-   ---------                         
+     X                             Conv
+ -----------      Conv             Feature   
+| -----------     Filter            ---------   
+|| -----------      W              | ---------  
+||| 000000000 |    -----           || --------- 
+||| 000000000 |   | -----          ||| 1121100 |
+||| 001110000 |   || -----         ||| 0223110 |
+||| 000111000 |   ||| 101 |  Bias  ||| 1143310 |
+||| 000011000 | *  || 010 | + B  = ||| 0124320 |
+||| 000011000 |     | 101 |        ||| 0123310 |
+||| 000110000 |      -----          || 0022110 |
+ || 000000000 |                      | 0111100 |
+  | 000000000 |                       --------- 
+   -----------                         
 ```
 ```
 feature = (X * W) + B
@@ -115,18 +115,18 @@ The rectified feature map then undergoes a max pooling layer.  Max pooling opera
 ```
 Conv                   
 Feature                
-(after ReLU)   Max     
- -------       Pool    
-| -------      Feature 
-|| -------      ----   
-|||1121100|    | ----  
-|||0223110|    || ---- 
-|||1143310|    |||2310|
-|||0124320| -> |||1430|
-|||0123310|     ||1330|
- ||0022110|      |1110|
-  |0111100|       ---- 
-   -------             
+(after ReLU)     Max     
+ ---------       Pool    
+| ---------      Feature 
+|| ---------      ------   
+||| 1121100 |    | ------  
+||| 0223110 |    || ------ 
+||| 1143310 |    ||| 2310 |
+||| 0124320 | -> ||| 1430 |
+||| 0123310 |     || 1330 |
+ || 0022110 |      | 1110 |
+  | 0111100 |       ------ 
+   ---------             
 ```
 ####Convolutional Layer 2
 + Input channels: 32 zero padded 14x14 features outputted by Max Pool Layer 1
