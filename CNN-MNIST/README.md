@@ -29,32 +29,32 @@ TensorFlow has created a script which downloads and installs the MNIST dataset. 
 Convolutional Weights
 Weights are shape [filter size x, filter size y, num input channels, num output channels]
 Biases are shape [num output channels]
-+ Layer 1 Weights: [5, 5, 1, 32]
-+ Layer 1 Biases:  [32]
-+ Layer 2 Weights: [5, 5, 32, 64]
-+ Layer 2 Biases:  [64]
++ Layer 1 Weights: W_conv1 is shape [5, 5, 1, 32]
++ Layer 1 Biases : b_conv1 is shape [32]
++ Layer 2 Weights: W_conv2 is shape [5, 5, 32, 64]
++ Layer 2 Biases : b_conv2 is shape [64]
 Fully Connected Layer Weights
 After convolutional layers, feature size has been reduced to a 7x7 feature.  We are using a FCL of 1024 neurons.
 Weights are shape [feature size x * feature size y * num input channels, num output channels]
 Biases are shape [num output channels]
-+ Full Layer Weights: [7 * 7 * 64, 1024]
-+ Full Layer Biases: [1024]
++ Full Layer Weights: W_fcl is shape [7 * 7 * 64, 1024]
++ Full Layer Biases : b_fcl is shape [1024]
 
 ####Input Layer
 4D uint numpy array [index, y, x, depth] of pixel values from 0 to 255.  Depth = 1.
 
 ####Convolutional Layer 1
-+ Input channels: 1 zero padded 28x28 image
++ Input channels : X is a zero padded 4D tensor of shape [image_length, 28, 28, 1]
++ Output channels: A_conv1 is a 4D tensor of shape [32, 28, 28, 1]
 + Filters: 32
 + Filter size: 5x5
 + Filter stride: 1
-+ Output channels: 32 features
 
 ######Zero Padding
 Zero padding simply means a border of zeros is added around the 2D image.  This allows the output features to have the same size as the original non-padded input image.  For example, if we have a 3x3 filter, the input image would need 2 borders of zeros to retain same size as the input image. Note, in this example I decided to draw the input image with a depth of 3.  For MNIST our depth for the images is 1 because the images are monochrome, but I decided to draw multiple channels as a general example:
 ```
-              Input Image  
-             (zero padded) 
+                Input Image  
+               (zero padded) 
   Input         -----------    
   Image        | -----------   
  -------       || -----------  
@@ -70,46 +70,47 @@ Zero padding simply means a border of zeros is added around the 2D image.  This 
                   -----------  
 ```
 ######Convolution
-The 2D input image X is convolved with a 2D filter W, then the result is added by a bias B.  This yields a feature map for the convolutional layer.  Imagine the input image is a translucent blue window(our zero padded 28x28 image).  Now, imagine the filter is a smaller translucent red window(our 5x5 filter).  If you place the red filter window over the blue image window and shine a light through both, you get a purple area the size of the filter window.  Keeping this picture in your head we then apply a 2D convolution upon the "purple area" where each element of the blue image in that area is multiplied by its repsective element in the red filter.  Once all elements have been multiplied, they are summed and then a bias is added to the result.  This summation is stored in the first element of the feature map.  Then the red filter slides over to the next part of the blue image and the convolution process is continued until all elements of the image have been convolved and feature map is complete.  How far the filter moves across the image is usually called "stride". 
+The 2D input image X is convolved with a 2D filter W, then the result is added by a bias b.  This yields a feature map for the convolutional layer.  Imagine the input image is a translucent blue window(our zero padded 28x28 image).  Now, imagine the filter is a smaller translucent red window(our 5x5 filter).  If you place the red filter window over the blue image window and shine a light through both, you get a purple area the size of the filter window.  Keeping this picture in your head we then apply a 2D convolution upon the "purple area" where each element of the blue image in that area is multiplied by its repsective element in the red filter.  Once all elements have been multiplied, they are summed and then a bias is added to the result.  This summation is stored in the first element of the feature map.  Then the red filter slides over to the next part of the blue image and the convolution process is continued until all elements of the image have been convolved and feature map is complete.  How far the filter moves across the image is usually called "stride". 
 
 ```           
 Input Image                          
-(zero padded)                  
-     X                             Conv
- -----------      Conv             Feature   
+(zero padded)                      Conv
+      X                            Feature
+ -----------      Conv                H   
 | -----------     Filter            ---------   
-|| -----------      W              | ---------  
+|| -----------       W             | ---------  
 ||| 000000000 |    -----           || --------- 
 ||| 000000000 |   | -----          ||| 1121100 |
 ||| 001110000 |   || -----         ||| 0223110 |
 ||| 000111000 |   ||| 101 |  Bias  ||| 1143310 |
-||| 000011000 | *  || 010 | + B  = ||| 0124320 |
+||| 000011000 | *  || 010 | + b  = ||| 0124320 |
 ||| 000011000 |     | 101 |        ||| 0123310 |
 ||| 000110000 |      -----          || 0022110 |
  || 000000000 |                      | 0111100 |
   | 000000000 |                       --------- 
    -----------                         
-```
-```
-feature = (X * W) + B
+
+H = (X * W) + b
 ```
 ######ReLU Activation Function
-Then feature is then inputted into an activation function.  In this case our activation function is a rectified linear unit(ReLU) whos function looks like:
+Then feature H is then inputted into an activation function.  In this case our activation function is a rectified linear unit(ReLU) whos function looks like:
 ```
-ReLU(feature) = max(0,feature)
+ReLU(H) = max(0,H)
 ```
 Imagine a simple neuron with an activation function, A. The ReLU zeros the feature if it is below the 0 threshold.  Otherwise the feature value is passed through. 
 ```
-               ------
- (X * W) + B  |      |  A = ReLU((X * W) + B)        | 0 if ((X * W) + B)  < 0 
---------------| ReLU |-------------------------  A = |
-Input Feature |      | Output Rectified Feature      | (X * W) + B otherwise
-               ------
+                  ------
+H = (X * W) + b  |      |  A = ReLU(H)              
+---------------->| ReLU |------------------------> 
+Input Feature    |      | Output Rectified Feature 
+                  ------
+
+A = ReLU((X * W) + b)  where A = 0 if H < 0 or A = H otherwise
 ```
 ####Max Pool Layer 1
 + Max pool: 2x2
-+ Input feature: 32 28x28 features from Convolutional Layer 1
-+ Output feature: 32 14x14 features
++ Input feature : A_conv1 is a 4D tensor of shape [32, 28, 28, 1]
++ Output feature: A_pool1 is a 4D tensor of shape [32, 14, 14, 1]
 
 The rectified feature map then undergoes a max pooling layer.  Max pooling operates just like the metaphor of the sliding red glass on the blue glass. However, instead of convolution the max pool layer takes the maximum value of the activations in a specified area from the input feature and builds a new max pool feature.  Note, a 2x2 max pool layer will halve the size of the feature.  For example:
 ```
@@ -129,19 +130,29 @@ Feature
    ---------             
 ```
 ####Convolutional Layer 2
-+ Input channels: 32 zero padded 14x14 features outputted by Max Pool Layer 1
++ Input channels : A_pool1 is a zero padded 4D tensor of shape [32, 14, 14, 1]
++ Output channels: A_conv2 is a 4D tensor of shape [64, 14, 14, 1]
 + Filters: 64
 + Filter size: 5x5
 + Filter stride: 1
-+ Output channels: 64 features
 
 Operates just like Layer 1.
 ####Max Pool Layer 2
 + Max pool: 2x2
-+ Input feature: 64 14x14 features from Convolutional Layer 2 
-+ Output feature: 64 7x7 features
++ Input feature : A_conv2 is a 4D tensor of shape [64, 14, 14, 1]
++ Output feature: A_pool2 is a 4D tensor of shape [64,  7,  7, 1]
 
-Same procedure as Max Pool Layer 1
+Operates just like Max Pool Layer 1
 ####Fully Connected Layer
++ Input connections : A_pool2 is a 4D tensor of shape [64, 7, 7, 1] reshaped into a batch of vectors.  The vectors have shape [-1, 7 * 7 * 64]
++ Output connections: A_fcl is a 4D tensor of shape [1024]
+```
+                                  ------
+H_fcl = (H_mpl2 x W_fcl) + B_fcl |      |  A = ReLU(H_fcl)              
+-------------------------------->| ReLU |------------------------> 
+Input Feature                    |      | Output Rectified Feature 
+                                  ------
 
+A = ReLU((H-mpl2 x W_fcl) + B_fcl)  where A = 0 if H_fcl < 0 or A = H_fcl otherwise
+```
 ####Output Layer
