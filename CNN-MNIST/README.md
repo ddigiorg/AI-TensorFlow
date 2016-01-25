@@ -17,11 +17,11 @@ TensorFlow has created a script which downloads and installs the MNIST dataset. 
 
 ##Convolutional Neural Network
 ```
- -------    -------    -------    -------    -------    -----------    ---------
-| Input |  | Conv  |  | Max   |  | Conv  |  | Max   |  | Fully     |  | Output  |
-| Layer |->| Layer |->| Pool  |->| Layer |->| Pool  |->| Connected |->| Softmax |
-|       |  | 1     |  | 1     |  | 2     |  | 2     |  | Layer     |  | Layer   |
- -------    -------    -------    -------    -------    -----------    ---------
+ -------      -------      -------      -------      -------      -----------      ---------
+| Input |    | Conv  |    | Max   |    | Conv  |    | Max   |    | Fully     |    | Output  |
+| Layer | -> | Layer | -> | Pool  | -> | Layer | -> | Pool  | -> | Connected | -> | Softmax |
+|       |    | 1     |    | 1     |    | 2     |    | 2     |    | Layer     |    | Layer   |
+ -------      -------      -------      -------      -------      -----------      ---------
 ```
 ####Weight Initialization
 + Weights: Initialized by a normal distribution with a standard deviation of 0.1.
@@ -51,7 +51,7 @@ Biases are shape [num output channels]
 + Output channels: 32 features
 
 ######Zero Padding
-Zero padding simply means a border of zeros is added around the 2D image.  This allows the output features to have the same size as the original non-padded input image.  For example, if we have a 3x3 filter, the input image would need 2 borders of zeros to retain same size as the input image:
+Zero padding simply means a border of zeros is added around the 2D image.  This allows the output features to have the same size as the original non-padded input image.  For example, if we have a 3x3 filter, the input image would need 2 borders of zeros to retain same size as the input image. Note, in this example I decided to draw the input image with a depth of 3.  For MNIST our depth for the images is 1 because the images are monochrome, but I decided to draw multiple channels as a general example:
 ```
               Input Image  
              (zero padded) 
@@ -71,6 +71,25 @@ Zero padding simply means a border of zeros is added around the 2D image.  This 
 ```
 ######Convolution
 The 2D input image X is convolved with a 2D filter W, then the result is added by a bias B.  This yields a feature map for the convolutional layer.  Imagine the input image is a translucent blue window(our zero padded 28x28 image).  Now, imagine the filter is a smaller translucent red window(our 5x5 filter).  If you place the red filter window over the blue image window and shine a light through both, you get a purple area the size of the filter window.  Keeping this picture in your head we then apply a 2D convolution upon the "purple area" where each element of the blue image in that area is multiplied by its repsective element in the red filter.  Once all elements have been multiplied, they are summed and then a bias is added to the result.  This summation is stored in the first element of the feature map.  Then the red filter slides over to the next part of the blue image and the convolution process is continued until all elements of the image have been convolved and feature map is complete.  How far the filter moves across the image is usually called "stride". 
+
+```           
+Input Image                          
+(zero padded)                  
+     X                          Conv
+---------       Conv            Feature   
+| ---------     Filter          -------   
+|| ---------      W            | -------  
+|||000000000|    ---           || ------- 
+|||000000000|   | ---          |||1121100|
+|||001110000|   || ---         |||0223110|
+|||000111000|   |||101|  Bias  |||1143310|
+|||000011000| *  ||010| + B  = |||0124320|
+|||000011000|     |101|        |||0123310|
+|||000110000|      ---          ||0022110|
+ ||000000000|                    |0111100|
+  |000000000|                     ------- 
+   ---------                         
+```
 ```
 feature = (X * W) + B
 ```
