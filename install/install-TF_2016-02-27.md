@@ -37,7 +37,7 @@ Currently TensorFlow requires cuDNN v2 or above.  The bad news is you need to re
 ```
 $ tar -xvzf cudnn-7.0-linux-x64-v4.0-prod.tgz
 ```
-After you have extracted the tarball file it will create a /opt/cuda/cuda folder.  Copy the cuDNN files into the necessary CUDA Toolkit directories:
+After you have extracted the tarball file it will create a /opt/cuda/cuda folder.  Navigate to /opt/cuda/cuda and copy the cuDNN files into the necessary CUDA Toolkit directories:
 ```
 $ sudo cp cuda/include/cudnn.h /opt/cuda/include
 $ sudo cp cuda/lib64/libcudnn* /opt/cuda/lib64
@@ -46,7 +46,7 @@ Then change the cuDNN file permissions:
 ```
 $ sudo chmod a+r /opt/cuda/lib64/libcudnn*
 ```
-(Optional) Remove the cuDNN tarball:
+(Optional) Navigate to /opt/cuda and remove the cuDNN tarball:
 ```
 $ rm cudnn-7.0-linux-x64-v4.0-prod.tgz
 ```
