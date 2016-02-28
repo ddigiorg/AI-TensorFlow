@@ -27,13 +27,13 @@ Download and Install CUDA Toolkit from the Arch Linux repository:
 ```
 $ pacman -S cuda
 ```
-Arch will install to the directory ~/opt/cuda/  
+Arch will install to the directory /opt/cuda/  
 ##3. Install cuDNN
 Navigate into the CUDA Toolkit directory:
 ```
-$ cd ~/opt/cuda/
+$ cd /opt/cuda/
 ```
-Currently TensorFlow requires cuDNN v2 or above.  The bad news is you need to register for their Accelerated Computing Developer Program... (SIGHDUCK).  The good news is it is free and only requires you wait ~2 days while you contemplate your navel to get access to the download.  In the mean time you may install the CPU version of TensorFlow to pass the time (or go outside and chase girls!).  Anyway you need to log into their website to download the cuDNN library for Linux, then move the tarball to your CUDA toolkit directory (~/opt/cuda).  Extract the tarball inside your CUDA toolkit directory:
+Currently TensorFlow requires cuDNN v2 or above.  The bad news is you need to register for their Accelerated Computing Developer Program... (SIGHDUCK).  The good news is it is free and only requires you wait ~2 days while you contemplate your navel to get access to the download.  In the mean time you may install the CPU version of TensorFlow to pass the time (or go outside and chase girls!).  Anyway you need to log into their website to download the cuDNN library for Linux, then move the tarball to your CUDA toolkit directory (/opt/cuda).  Extract the tarball inside your CUDA toolkit directory:
 ```
 $ tar -xvzf cudnn-7.0-linux-x64-v4.0-prod.tgz
 ```
@@ -72,7 +72,7 @@ $ mv tensorflow-0.7.1-cp34-none-linux_x86_64.whl tensorflow-0.7.1-cp35-none-linu
 ```
 Pip install from Tensorflow wheel file: 
 ```
-$ sudo pip3 install tensorflow-0.6.0-cp35-none-linux_x86_64.whl
+$ sudo pip3 install tensorflow-0.7.1-cp35-none-linux_x86_64.whl
 ```
 ##5. Set Environment Variables
 Set the LD_LIBRARY_PATH and CUDA_HOME environment variables by adding the commands below to your user and/or root .bashrc files. These assume CUDA installation is in /opt/cuda/:
