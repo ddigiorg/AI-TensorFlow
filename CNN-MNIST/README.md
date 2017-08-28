@@ -1,8 +1,8 @@
-#Convolutional Neural Network - MNIST Dataset
+# Convolutional Neural Network - MNIST Dataset
 
 The purpose of this Convolutional Neural Network(CNN) project is to understand deep neural networks, familiarize myself with Machine Learning code development, and provide a code base for research on  Artificial Intelligence(AI) concepts.  My motivation is to introduce myself to the field of AI via a well-known, relatively simple, and interesting problem: handwritten digit recognition using the MNIST dataset.  The project's code is implemented by following TensorFlow's deep convolutional network [tutorial](https://www.tensorflow.org/versions/master/tutorials/mnist/pros/index.html).
 
-##MNIST Dataset
+## MNIST Dataset
 The MNIST dataset consists of images and labels of handwritten digits from 0 to 9.  The images are 28x28 pixels of monochrome values from 0 to 255.  The files are:
 
 + t10k-images.idx3-ubyte
@@ -15,7 +15,7 @@ TensorFlow has created a script which downloads and installs the MNIST dataset. 
 + images: a 4D uint numpy array [index, y, x, depth] of pixel values from 0 to 255.  Because the MNIST dataset is monochrome the depth is 1.  For reference, RGB images have a depth of 3 and CMYK would be 4.
 + labels: a 1D uint numpy array [index] of labels from 0 to 9 in onehot format (aka 4 is 000001000, 9 is 100000000, etc.).
 
-##Convolutional Neural Network
+## Convolutional Neural Network
 ```
  -------      -------      -------      -------      -------      -----------      ---------
 | Input |    | Conv  |    | Max   |    | Conv  |    | Max   |    | Fully     |    | Output  |
@@ -23,7 +23,7 @@ TensorFlow has created a script which downloads and installs the MNIST dataset. 
 |       |    | 1     |    | 1     |    | 2     |    | 2     |    | Layer     |    | Layer   |
  -------      -------      -------      -------      -------      -----------      ---------
 ```
-####Weight Initialization
+#### Weight Initialization
 + Weights: Initialized by a normal distribution with a standard deviation of 0.1.
 + Biases: Initialized to 0.1
 Convolutional Weights
@@ -40,17 +40,17 @@ Biases are shape [num output channels]
 + Full Layer Weights: W_fcl is shape [7 * 7 * 64, 1024]
 + Full Layer Biases : b_fcl is shape [1024]
 
-####Input Layer
+#### Input Layer
 4D uint numpy array [index, y, x, depth] of pixel values from 0 to 255.  Depth = 1.
 
-####Convolutional Layer 1
+#### Convolutional Layer 1
 + Input image : x_image is a zero padded 4D tensor of shape [image_length, 28, 28, 1]
 + Output feature map: h_conv1 is a 4D tensor of shape [32, 28, 28, 1]
 + Filters: 32
 + Filter size: 5x5
 + Filter stride: 1
 
-######Zero Padding
+###### Zero Padding
 Zero padding simply means a border of zeros is added around the 2D image.  This allows the output features to have the same size as the original non-padded input image.  For example, if we have a 3x3 filter, the input image would need 2 borders of zeros to retain same size as the input image. Note, in this example I decided to draw the input image with a depth of 3.  For MNIST our depth for the images is 1 because the images are monochrome, but I decided to draw multiple channels as a general example:
 ```
                 Input Image  
@@ -69,7 +69,8 @@ Zero padding simply means a border of zeros is added around the 2D image.  This 
                  | 000000000 | 
                   -----------  
 ```
-######Convolution
+
+###### Convolution
 The 2D input image X is convolved with a 2D filter W, then the result is added by a bias b.  This yields a feature map, h_conv1a, for the convolutional layer.  Note: the variable 'h' is usually convention for 'feature map'.   Imagine the input image is a translucent blue window(our zero padded 28x28 image).  Now, imagine the filter is a smaller translucent red window(our 5x5 filter).  If you place the red filter window over the blue image window and shine a light through both, you get a purple area the size of the filter window.  Keeping this picture in your head we then apply a 2D convolution upon the "purple area" where each element of the blue image in that area is multiplied by its repsective element in the red filter.  Once all elements have been multiplied, they are summed and then a bias is added to the result.  This summation is stored in the first element of the feature map.  Then the red filter slides over to the next part of the blue image and the convolution process is continued until all elements of the image have been convolved and feature map is complete.  How far the filter moves across the image is usually called "stride". 
 
 ```           
@@ -92,7 +93,8 @@ x_image                                    Feature Map
 
 h_conv1a = (X * W_conv1) + b_conv1
 ```
-######ReLU Activation Function
+
+###### ReLU Activation Function
 Then feature map h_conv1a is then inputted into an activation function.  In this case our activation function is a rectified linear unit(ReLU) whos function looks like:
 ```
 ReLU(h_conv1a) = max(0,h_conv1a)
@@ -107,7 +109,8 @@ Input Feature Map                         |      | Output Rectified Feature Map
 
 h_conv1 = ReLU((x_iamge * W_conv1) + b_conv1)  where h_conv1 = 0 if h_conv1a < 0 or h_conv1 = h_conv1a otherwise
 ```
-####Max Pool Layer 1
+
+#### Max Pool Layer 1
 + Max pool: 2x2
 + Input feature map : A_conv1 is a 4D tensor of shape [32, 28, 28, 1]
 + Output feature map: A_pool1 is a 4D tensor of shape [32, 14, 14, 1]
@@ -130,7 +133,8 @@ h_conv1          Pool
   | 0111100 |       ------ 
    ---------             
 ```
-####Convolutional Layer 2
+
+#### Convolutional Layer 2
 + Input feature map : h_pool1 is a zero padded 4D tensor of shape [32, 14, 14, 1]
 + Output feature map: h_conv2 is a 4D tensor of shape [64, 14, 14, 1]
 + Filters: 64
@@ -138,13 +142,15 @@ h_conv1          Pool
 + Filter stride: 1
 
 Operates just like Layer 1.
-####Max Pool Layer 2
+
+#### Max Pool Layer 2
 + Max pool: 2x2
 + Input feature map : h_conv2 is a 4D tensor of shape [64, 14, 14, 1]
 + Output feature map: h_pool2 is a 4D tensor of shape [64,  7,  7, 1]
 
 Operates just like Max Pool Layer 1
-####Fully Connected Layer
+
+#### Fully Connected Layer
 + Input connections : h_pool2 is a 4D tensor of shape [64, 7, 7, 1] reshaped into a batch of vectors.  The vectors have shape [-1, 7 * 7 * 64]
 + Output connections: h_fcl is a 4D tensor of shape [1024]
 ```
@@ -156,4 +162,4 @@ Input Feature Map                  |      | Output Rectified Feature Map
 
 h_fcl = ReLU((h_pool2 x W_fcl) + b_fcl)  where h_fcl = 0 if H_fcla < 0 or h_fcl = h_fcla otherwise
 ```
-####Output Layer
+#### Output Layer
