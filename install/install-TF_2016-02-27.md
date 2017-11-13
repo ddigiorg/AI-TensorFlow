@@ -23,17 +23,30 @@ $ gcc --version
 ```
 Currently TensorFlow requires CUDA 7.0 or higher.
 ([CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit))([CUDA Toolkit Documentation](http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/#axzz3xQuiXyUB))([cuda-7.5.18-1](https://www.archlinux.org/packages/community/x86_64/cuda/))
-Download and Install CUDA Toolkit from the Arch Linux repository:
-```
-$ pacman -S cuda
-```
+
+
+
+~~Download and Install CUDA Toolkit from the Arch Linux repository: pacman -S cuda~~  
+__Remark:__ The regular Arch Linux repository contains CUDA 9.0, which is currenlty not compatible to TensorFlow 1.4 (as of Nov. 2017). There exists an user contributed AUR with [CUDA 8.0](https://aur.archlinux.org/packages/cuda-8.0/), install it via yaourt. 
+
 Arch will install to the directory /opt/cuda/  
+
+
 ## 3. Install cuDNN
+
 Navigate into the CUDA Toolkit directory:
 ```
 $ cd /opt/cuda/
 ```
-Currently TensorFlow requires cuDNN v2 or above.  The bad news is you need to register for their Accelerated Computing Developer Program... (SIGHDUCK).  The good news is it is free and only requires you wait ~2 days while you contemplate your navel to get access to the download.  In the mean time you may install the CPU version of TensorFlow to pass the time (or go outside and chase girls!).  Anyway you need to log into their website to download the cuDNN library for Linux, then move the tarball to your CUDA toolkit directory (/opt/cuda).  Extract the tarball inside your CUDA toolkit directory:
+
+There is a cuDNN AUR containing cuDNN 6.0 which is compatible with TensorFlow, but it currently (Nov. 2017) depends on the official CUDA package from the Arch Linux repository (CUDA 9.0). Instead you need to install cuDNN manually until the Issue is resolved.
+
+You can download cuDNN from the NVIDIA homepage (you need to register), or alternatively you can use the following direct download link (can change in the future):
+
+[cuDNN 6.0 for CUDA 8.0](http://developer.download.nvidia.com/compute/redist/cudnn/v6.0/cudnn-8.0-linux-x64-v6.0.tgz)
+
+
+Move the tarball to your CUDA toolkit directory (/opt/cuda).  Extract the tarball inside your CUDA toolkit directory:
 ```
 $ tar -xvzf cudnn-7.0-linux-x64-v4.0-prod.tgz
 ```
